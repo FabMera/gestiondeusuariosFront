@@ -1,13 +1,20 @@
 import React, { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
-const UserForm = ({ userSelected, handlerAddUser, initialUserForm }) => {
+const UserForm = ({
+  userSelected,
+  handlerAddUser,
+  initialUserForm,
+  setVisible,
+  visible,
+  handlerCloseForm,
+}) => {
   const [userForm, setUserForm] = useState(initialUserForm);
 
   const { id, username, password, email } = userForm;
 
   useEffect(() => {
-    setUserForm(userSelected);
+    setUserForm({ ...userSelected, password: "" });
   }, [userSelected]);
 
   const onInputChange = ({ target }) => {
@@ -18,7 +25,7 @@ const UserForm = ({ userSelected, handlerAddUser, initialUserForm }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if (Object.values(userForm).includes("")) {
+    if (!username || (!password && id === 0) || !email) {
       Swal.fire(
         "Error",
         "Debe completar todos los campos del formulario",
@@ -26,17 +33,12 @@ const UserForm = ({ userSelected, handlerAddUser, initialUserForm }) => {
       );
       return;
     }
-    if (userForm.id) {
-      Swal.fire(
-        "Actualizado",
-        "El usuario fue actualizado correctamente",
-        "success"
-      );
-    } else {
-      handlerAddUser(userForm);
-      Swal.fire("Agregado", "El usuario fue agregado correctamente", "success");
-    }
+    handlerAddUser(userForm);
+    setUserForm(initialUserForm);
+  };
 
+  const onCloseForm = () => {
+    handlerCloseForm();
     setUserForm(initialUserForm);
   };
 
@@ -72,7 +74,14 @@ const UserForm = ({ userSelected, handlerAddUser, initialUserForm }) => {
         <input type="hidden" name="id" value={id} />
 
         <button className="btn btn-primary w-100 mb-3" type="submit">
-          {userForm.id ? "Actualizar" : "Agregar"}
+          {userForm.id ? "Editar" : "Crear"}
+        </button>
+        <button
+          className="btn btn-primary mx-2"
+          type="button"
+          onClick={() => onCloseForm()}
+        >
+          Cerrar
         </button>
       </form>
     </>

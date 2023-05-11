@@ -1,9 +1,10 @@
 import React from "react";
 import UserRow from "./UserRow";
 
-const UsersList = ({ users,handlerRemoveUser,handlerUpdateUser }) => {
+const UsersList = ({ users,handlerRemoveUser,handlerUpdateUser}) => {
   return (
     <>
+    
       <table className="table table-hover table-striped">
         <thead>
           <tr>
