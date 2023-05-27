@@ -1,15 +1,10 @@
 import { useReducer, useState } from "react";
 import { usersReducer } from "../reducers/usersReducer";
 import Swal from "sweetalert2";
+import { findAll } from "../services/userService";
+import { useNavigate } from "react-router-dom";
 
-const initialUsers = [
-  {
-    id: 1,
-    username: "lucas",
-    password: "12345",
-    email: "lucas@correo.com",
-  },
-];
+const initialUsers = [];
 
 const initialUserForm = {
   id: 0,
@@ -22,6 +17,14 @@ export const useUsers = () => {
   const [users, dispatch] = useReducer(usersReducer, initialUsers);
   const [userSelected, setUserSelected] = useState(initialUserForm);
   const [visible, setVisible] = useState(false);
+  const [mostrar,setMostrar]=useState(true);
+  
+  const navigate = useNavigate();
+  const getUsers = async () => {
+    const result = await findAll();
+    console.log(result);
+    dispatch({ type: "loadingUsers", payload: result.data });
+  };
 
   const handlerAddUser = (user) => {
     //console.log(user);
@@ -32,24 +35,26 @@ export const useUsers = () => {
       payload: user,
     });
     Swal.fire(
-      user.id === 0 ? "Usuario Creado" : "Usuario Actualizado",
+      user.id === 0 ? "User Created" : "User Updated",
       user.id === 0
-        ? "El usuario ha sido creado con exito!"
-        : "El usuario ha sido actualizado con exito!",
+        ? "User created successfully!"
+        : "User updated successfully!",
       "success"
     );
     handlerCloseForm();
+    navigate("/users");
   };
 
   const handlerRemoveUser = (id) => {
     Swal.fire({
-      title: "¿Esta seguro de eliminar este usuario?",
-      text: "No podra recuperar este registro!",
+      title: "Do you want to delete this user?",
+      text: "Cannot retrieve this record!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Si, eliminar",
+      confirmButtonText: "Yes, delete",
+      width: 350,
     }).then((result) => {
       if (result.isConfirmed) {
         dispatch({
@@ -57,7 +62,7 @@ export const useUsers = () => {
           payload: id,
         });
 
-        Swal.fire("Eliminado", "Registro eliminado con exito!", "success");
+        Swal.fire("Removed", "Register removed successfully!", "success");
       }
     });
   };
@@ -84,7 +89,9 @@ export const useUsers = () => {
     handlerUpdateUser,
     handlerCloseForm,
     visible,
-    setVisible,
     handlerOpenForm,
+    getUsers,
+    mostrar,
+    setMostrar
   };
 };

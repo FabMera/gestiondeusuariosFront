@@ -1,12 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
+import { NavLink } from "react-router-dom";
+import { UserContext } from "../Context/userContext";
 
-const UserRow = ({
-  id,
-  username,
-  email,
-  handlerRemoveUser,
-  handlerUpdateUser,
-}) => {
+const UserRow = ({ id, username, email }) => {
+  const { handlerRemoveUser, handlerUpdateUser, setMostrar } =
+    useContext(UserContext);
   return (
     <>
       <tr>
@@ -15,11 +13,23 @@ const UserRow = ({
         <td>{email}</td>
         <td>
           <button
-            onClick={() => handlerUpdateUser({ id, username, email })}
-            className="btn btn-sm btn-warning btn-sm"
+            onClick={() => {
+              handlerUpdateUser({ id, username, email });
+              setMostrar(true);
+            }}
+            className="btn btn-sm btn-secondary btn-sm"
           >
             update
           </button>
+        </td>
+        <td>
+          <NavLink
+            onClick={() => setMostrar(false)}
+            className="btn btn-secondary btn-sm"
+            to={`/users/edit/${id}`}
+          >
+            update route
+          </NavLink>
         </td>
         <td>
           <button

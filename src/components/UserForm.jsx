@@ -1,14 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Swal from "sweetalert2";
+import FormularioUser from "./FormularioUser";
+import { UserContext } from "../Context/userContext";
 
-const UserForm = ({
-  userSelected,
-  handlerAddUser,
-  initialUserForm,
-  setVisible,
-  visible,
-  handlerCloseForm,
-}) => {
+const UserForm = ({ userSelected, handlerCloseForm }) => {
+  const { initialUserForm, handlerAddUser } = useContext(UserContext);
   const [userForm, setUserForm] = useState(initialUserForm);
 
   const { id, username, password, email } = userForm;
@@ -18,7 +14,6 @@ const UserForm = ({
   }, [userSelected]);
 
   const onInputChange = ({ target }) => {
-    //console.log(e.target.value);
     const { name, value } = target;
     setUserForm({ ...userForm, [name]: value });
   };
@@ -26,11 +21,10 @@ const UserForm = ({
   const onSubmit = (e) => {
     e.preventDefault();
     if (!username || (!password && id === 0) || !email) {
-      Swal.fire(
-        "Error",
-        "Debe completar todos los campos del formulario",
-        "error"
-      );
+      Swal.fire("Error", " Username, password and email are required", "error");
+      return;
+    } else if (!email.includes("@") || !email.includes(".")) {
+      Swal.fire("Error", "Email format is not valid", "error");
       return;
     }
     handlerAddUser(userForm);
@@ -44,46 +38,16 @@ const UserForm = ({
 
   return (
     <>
-      <form onSubmit={onSubmit}>
-        <input
-          className="form-control my-3"
-          placeholder="Username"
-          name="username"
-          value={username}
-          onChange={onInputChange}
-        />
-        {userForm.id ? null : (
-          <input
-            className="form-control my-3"
-            placeholder="password"
-            name="password"
-            value={password}
-            type="password"
-            onChange={onInputChange}
-          />
-        )}
-
-        <input
-          className="form-control my-3"
-          placeholder="email"
-          name="email"
-          value={email}
-          type="email"
-          onChange={onInputChange}
-        />
-        <input type="hidden" name="id" value={id} />
-
-        <button className="btn btn-primary w-100 mb-3" type="submit">
-          {userForm.id ? "Editar" : "Crear"}
-        </button>
-        <button
-          className="btn btn-primary mx-2"
-          type="button"
-          onClick={() => onCloseForm()}
-        >
-          Cerrar
-        </button>
-      </form>
+      <FormularioUser
+        onSubmit={onSubmit}
+        username={username}
+        onInputChange={onInputChange}
+        password={password}
+        email={email}
+        id={id}
+        userForm={userForm}
+        onCloseForm={onCloseForm}
+      />
     </>
   );
 };
