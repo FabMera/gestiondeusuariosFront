@@ -14,7 +14,10 @@ export const UserProvider = ({ children }) => {
         handlerCloseForm,
         handlerOpenForm,
         setMostrar,
-        mostrar
+        mostrar,
+        getUsers,
+        errors
+        
       } = useUsers();
     
     return (
@@ -30,7 +33,10 @@ export const UserProvider = ({ children }) => {
                 handlerCloseForm,
                 handlerOpenForm,
                 setMostrar,
-                mostrar
+                mostrar,
+                getUsers,
+                errors
+                
             }}>
             {children}
         </UserContext.Provider>

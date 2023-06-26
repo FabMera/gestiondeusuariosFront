@@ -10,9 +10,11 @@ const RegisterPage = () => {
   const { id } = useParams();
 
   useEffect(() => {
-    const user = users.find((user) => user.id == id) || initialUserForm;
-    setUserSelected(user);
-    console.log(id);
+    if (id) {
+      const user = users.find((user) => user.id == id) || initialUserForm;
+      setUserSelected(user);
+      console.log(id);
+    }
   }, [id]);
   return (
     <>
