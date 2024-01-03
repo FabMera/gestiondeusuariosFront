@@ -1,9 +1,7 @@
-import axios from "axios";
+import userApi from "../apis/userApis";
 
-const BASE_URL = "http://localhost:8080/users";
-
-//configuracion de los headers para las peticiones
-const config = () => {
+//configuracion de los headers para las peticiones lo reemplazamos por el interceptor userApi.js
+/* const config = () => {
     //obtenemos el token del sessionStorage y lo pasamos en el header de la peticion para que el backend pueda validar el token.
     return {
         headers: {
@@ -11,32 +9,29 @@ const config = () => {
             "Content-Type": "application/json",
         },
     };
-};
+}; */
+const BASE_URL = "";
 
 //funcion para obtener todos los usuarios
 export const findAll = async () => {
     try {
-        const response = await axios.get(BASE_URL);
+        const response = await userApi.get(BASE_URL);
         return response;
     } catch (error) {
         console.error(error);
+        throw error;
     }
-    return null;
 };
 
 //funcion para guardar un usuario
 export const save = async ({ username, password, email, admin }) => {
     try {
-        return await axios.post(
-            BASE_URL,
-            {
-                username,
-                password,
-                email,
-                admin,
-            },
-            config()
-        );
+        return await userApi.post(BASE_URL, {
+            username,
+            password,
+            email,
+            admin,
+        });
     } catch (error) {
         throw error;
     }
@@ -45,15 +40,11 @@ export const save = async ({ username, password, email, admin }) => {
 //funcion para actualizar un usuario
 export const update = async ({ id, username, email, admin }) => {
     try {
-        return await axios.put(
-            `${BASE_URL}/${id}`,
-            {
-                username,
-                email,
-                admin
-            },
-            config()
-        );
+        return await userApi.put(`${BASE_URL}/${id}`, {
+            username,
+            email,
+            admin,
+        });
     } catch (error) {
         throw error;
     }
@@ -61,7 +52,7 @@ export const update = async ({ id, username, email, admin }) => {
 //funcion para eliminar un usuario por id
 export const deleteById = async (id) => {
     try {
-        await axios.delete(`${BASE_URL}/${id}`, config());
+        await userApi.delete(`${BASE_URL}/${id}`);
     } catch (error) {
         throw error;
     }

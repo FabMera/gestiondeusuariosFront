@@ -3,12 +3,13 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import UsersPage from "../pages/UsersPage";
 import Navbar from "../components/Layout/Navbar";
 import RegisterPage from "../pages/RegisterPage";
-import { UserProvider } from "../Context/UserProvider";
+/* import { UserProvider } from "../Context/UserProvider"; */
 
 const UserRoutes = () => {
     return (
+        //Quitamos el UserProvider para utilizar redux
         <>
-            <UserProvider>
+            {/* <UserProvider> */}
                 <Navbar />
                 <Routes>
                     <Route path="users" element={<UsersPage />} />
@@ -16,7 +17,7 @@ const UserRoutes = () => {
                     <Route path="users/edit/:id" element={<RegisterPage />} />
                     <Route path="/" element={<Navigate to="/users" />} />
                 </Routes>
-            </UserProvider>
+           {/*  </UserProvider> */}
         </>
     );
 };
