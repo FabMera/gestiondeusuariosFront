@@ -1,9 +1,10 @@
 import React, { useContext } from "react";
 import UserForm from "./UserForm";
 import { UserContext } from "../Context/userContext";
-
+import { useUsers } from "../hooks/useUsers";
 const UserModalForm = () => {
-    const { userSelected, handlerCloseForm } = useContext(UserContext);
+    //const { userSelected, handlerCloseForm } = useContext(UserContext);
+    const { userSelected, handlerCloseForm } = useUsers();
     return (
         <>
             <div className="abrir-modal animacion fadeIn">

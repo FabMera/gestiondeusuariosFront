@@ -1,15 +1,18 @@
-import React, { useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import UserModalForm from "../components/UserModalForm";
 import UsersList from "../components/UsersList";
 import { UserContext } from "../Context/userContext";
 import { AuthContext } from "../auth/context/AuthContext";
+import { useUsers } from "../hooks/useUsers";
+import { useAuth } from "../auth/hooks/useAuth";
 
 const UsersPage = () => {
+    //const { users, visible, handlerOpenForm, setMostrar, getUsers } =useContext(UserContext);
     const { users, visible, handlerOpenForm, setMostrar, getUsers } =
-        useContext(UserContext);
-    const { login } = useContext(AuthContext);
+        useUsers();
     //el user es el objeto que viene del formulario de usuario y lo recibe
     //el handlerAddUser que lo pasa al dispatch que lo pasa al reducer que lo agrega al estado de users
+    const { login } = useAuth();
 
     useEffect(() => {
         getUsers();

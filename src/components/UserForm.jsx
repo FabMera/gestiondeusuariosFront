@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import Swal from "sweetalert2";
 import FormularioUser from "./FormularioUser";
 import { UserContext } from "../Context/userContext";
+import { useUsers } from "../hooks/useUsers";
 
 const UserForm = ({ userSelected, handlerCloseForm }) => {
-    const { initialUserForm, handlerAddUser, errors } = useContext(UserContext);
+    //const { initialUserForm, handlerAddUser, errors } = useContext(UserContext);
+    const { initialUserForm, handlerAddUser, errors } = useUsers();
     const [userForm, setUserForm] = useState(initialUserForm);
     const [checked, setChecked] = useState(userForm.admin);
 
@@ -21,13 +22,6 @@ const UserForm = ({ userSelected, handlerCloseForm }) => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        /*  if (!username || (!password && id === 0) || !email) {
-      Swal.fire("Error", " Username, password and email are required", "error");
-      return;
-    } else if (!email.includes("@") || !email.includes(".")) {
-      Swal.fire("Error", "Email format is not valid", "error");
-      return;
-    } */
         handlerAddUser(userForm);
     };
 

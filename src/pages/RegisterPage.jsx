@@ -2,9 +2,12 @@ import React, { useContext, useEffect, useState } from "react";
 import UserForm from "../components/UserForm";
 import { useParams } from "react-router-dom";
 import { UserContext } from "../Context/userContext";
+import { useUsers } from "../hooks/useUsers";
 
 const RegisterPage = () => {
-  const { users = [], initialUserForm } = useContext(UserContext);
+  //const { users = [], initialUserForm } = useContext(UserContext);
+  const { users = [], initialUserForm } = useUsers();
+  //Se mantiene el estado de userSelected en el componente RegisterPage porque no es global
   const [userSelected, setUserSelected] = useState(initialUserForm);
 
   const { id } = useParams();

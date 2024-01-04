@@ -2,10 +2,12 @@ import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { UserContext } from "../../Context/userContext";
 import { AuthContext } from "../../auth/context/AuthContext";
+import { useAuth } from "../../auth/hooks/useAuth";
 
 const Navbar = () => {
     const { setMostrar } = useContext(UserContext);
-    const { login, handlerLogout } = useContext(AuthContext);
+    //const { login, handlerLogout } = useContext(AuthContext);
+    const { login, handlerLogout } = useAuth();
     console.log(login);
     const handleMostrar = () => {
         setMostrar(false);
